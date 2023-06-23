@@ -113,12 +113,12 @@ const updateGame = async (req, res) => {
 const deleteGame = async (req, res) => {
   try {
     const { id } = req.params;
-    const findGames = await GamesModel.findById(id);
+    const findGames = await GamesModel.findByIdAndDelete(id);
 
     if (findGames == null) {
       return res.status(404).json({ message: `Game with id ${id} not found` })
     };
-    await findGames.remove();
+    
     res.status(200).json({ message: `Game with id ${id} was successfully deleted` });
   } catch (error) {
     res.status(500).json({ message: error.message });
