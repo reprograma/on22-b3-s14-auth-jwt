@@ -1,5 +1,7 @@
 const Colaboradoras = require('../models/colaboradorasModel'); //chamo meu model de colaboradora
 const bcrypt = require('bcrypt'); //chamo a biblioteca do bcrypt para encriptar dados
+const jwt = require('jsonwebtoken');
+const SECRET = process.env.SECRET;
 
 const create = (req, res) => {
     const senhaComHash = bcrypt.hashSync(req.body.senha, 10); //uso função do bcrypt para a senha virar um Hash
@@ -36,8 +38,6 @@ const deleteById = async (req, res) => {
 };
 
 
-const jwt = require('jsonwebtoken');
-const SECRET = process.env.SECRET;
 
 
 const login = (req, res) => {
