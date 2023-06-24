@@ -117,7 +117,7 @@ module.exports = {
 
 ```
 Método -> POST
-EndPoint -> http://localhost:6669/colaboradoras
+EndPoint -> http://localhost:6669/gamestore/colaboradoras
 
 body -> raw -> json
 
@@ -154,7 +154,7 @@ module.exports = {
 - Testar a busca da lista de colaboradas no Postman:
 ```
 Método -> GET
-EndPoint -> http://localhost:6669/colaboradoras
+EndPoint -> http://localhost:6669/gamestore/colaboradoras
 
 para enviar clique em -> SEND
 ```
@@ -187,7 +187,7 @@ module.exports = {
 - Testar deletar colaborada passando o ID no Postman:
 ```
 Método -> DELETE
-EndPoint -> http://localhost:6669/colaboradoras/coloque o id
+EndPoint -> http://localhost:6669/gamestore/colaboradoras/:id
 
 para enviar clique em -> SEND
 ```
@@ -234,7 +234,7 @@ module.exports = {
 - Testar a busca da lista de colaboradas no Postman:
 ```
 Método -> POST
-EndPoint -> http://localhost:6669/colaboradoras/login
+EndPoint -> http://localhost:6669/gamestore/colaboradoras/login
 
 body -> raw -> json
 No corpo:
