@@ -22,7 +22,7 @@ SECRET=
 - Crie o arquivo .env:
 ```javascript
 DB_PORT=COLOQUE_SUA_PORTA_AQUI
-DATABASE_URI=COLOQUE_SUA_URL_MONGODB_AQUI
+DATABASE_URI=COLOQUE_SUA_URL_MONGODB_ENTRE_ASPAS_AQUI
 SECRET=COLOQUE_CHAVE_SEM_ASPAS_AQUI
 ```
 *obs:* para a SECRET deve ser gerada uma [Hash](https://passwordsgenerator.net/sha1-hash-generator/) 
