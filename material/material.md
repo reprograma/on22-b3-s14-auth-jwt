@@ -10,8 +10,8 @@
 - Após forkar e clonar o projeto, no terminal entrar na pasta do projeto e usar os comandos:
 ```javascript
 $   npm install //para buscar as depencias salvas do projeto
-$   npm install jsonwebtoken -- save // para utilizar o jwt
-$   npm install bcrypt -- save // para encriptar as senhas
+$   npm install jsonwebtoken // para utilizar o jwt
+$   npm install bcrypt // para encriptar as senhas
 ```
 
 - No arquivo .env.example vamos adicionar:
@@ -21,8 +21,8 @@ SECRET=
 
 - Crie o arquivo .env:
 ```javascript
-PORT=COLOQUE_SUA_PORTA_AQUI
-DATABASE_URI=COLOQUE_SUA_URL_MONGODB_AQUI
+DB_PORT=COLOQUE_SUA_PORTA_AQUI
+DATABASE_URI=COLOQUE_SUA_URL_MONGODB_ENTRE_ASPAS_AQUI
 SECRET=COLOQUE_CHAVE_SEM_ASPAS_AQUI
 ```
 *obs:* para a SECRET deve ser gerada uma [Hash](https://passwordsgenerator.net/sha1-hash-generator/) 
@@ -117,7 +117,7 @@ module.exports = {
 
 ```
 Método -> POST
-EndPoint -> http://localhost:8000/colaboradoras
+EndPoint -> http://localhost:6669/gamestore/colaboradoras
 
 body -> raw -> json
 
@@ -154,7 +154,7 @@ module.exports = {
 - Testar a busca da lista de colaboradas no Postman:
 ```
 Método -> GET
-EndPoint -> http://localhost:8000/colaboradoras
+EndPoint -> http://localhost:6669/gamestore/colaboradoras
 
 para enviar clique em -> SEND
 ```
@@ -187,7 +187,7 @@ module.exports = {
 - Testar deletar colaborada passando o ID no Postman:
 ```
 Método -> DELETE
-EndPoint -> http://localhost:8000/colaboradoras/coloque o id
+EndPoint -> http://localhost:6669/gamestore/colaboradoras/:id
 
 para enviar clique em -> SEND
 ```
@@ -224,8 +224,8 @@ const login = (req, res) => {
 module.exports = {
     create,
     getAll,
-    deleteById
-    login,
+    deleteById,
+    login
 }
 ```
 
@@ -234,7 +234,7 @@ module.exports = {
 - Testar a busca da lista de colaboradas no Postman:
 ```
 Método -> POST
-EndPoint -> http://localhost:8000/colaboradoras/login
+EndPoint -> http://localhost:6669/gamestore/colaboradoras/login
 
 body -> raw -> json
 No corpo:
@@ -251,11 +251,16 @@ Ele irá retornar o TOKEN
 
 ## Agora vamos proteger as rotas da nossa API :closed_lock_with_key:
 
-- Em uma das rotas em controller no arquivo consolesController.js, dentro do código em try:
-
+-  No início do arquivo consolesController.js importe: 
+  
 ```javascript
-const jwt = require('jsonwebtoken')
-const SECRET = process.env.SECRET
+const jwt = require('jsonwebtoken') // importa o JWT
+const SECRET = process.env.SECRET // carrega a chave SECRET do meu .env
+```
+
+- Em uma das rotas em controller no arquivo consolesController.js, dentro do código em try:
+  
+```javascript
 
 const authHeader = req.get('authorization'); // pega o cabeçalho de autorização
 
@@ -282,7 +287,7 @@ const authHeader = req.get('authorization'); // pega o cabeçalho de autorizaç�
 - Testar no Postman se sua rota está protegida:
 ```
 Método -> Usar o método que foi protegido, exemplo: GET 
-EndPoint -> Usar o endpoint do método que foi protegido, exemplo: http://localhost:8000/gamestore/consoles/all
+EndPoint -> Usar o endpoint do método que foi protegido, exemplo: http://localhost:6669/gamestore/consoles/all
 
 
 
