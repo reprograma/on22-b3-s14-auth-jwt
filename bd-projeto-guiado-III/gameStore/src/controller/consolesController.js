@@ -1,17 +1,40 @@
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require('jsonwebtoken')
+const SECRET = process.env.SECRET
 
 const findAllConsoles = async (req, res) => {
   try {
+    
+    const authHeader = req.get('authorization')
+    
+    if (!authHeader) {
+      return res.status(401).send('No authorization info!')
+    }
+
+    const token = authHeader.split(' ')[1]
+
+    jwt.verify(token, SECRET, async function (err) {
+      if (err) {
+        return res.status(403).send('Access not authorized!')
+      }
+
     const allConsoles = await ConsolesModel.find();
     res.status(200).json(allConsoles);
-  } catch {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+
+    })
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ message: err.message });
   };
 };
 
 const findConsoleById = async (req, res) => {
   try {
+
+
+
+
+
     const findConsole = await ConsolesModel.findById(req.params.id);
     res.status(200).json(findConsole);
   } catch (error) {
