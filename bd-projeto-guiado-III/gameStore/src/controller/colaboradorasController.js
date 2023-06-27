@@ -1,14 +1,14 @@
-const Colaboradoras = require('../models/colaboradorasModel'); //chamo meu model de colaboradora
-const bcrypt = require('bcrypt'); //chamo a biblioteca do bcrypt para encriptar dados
+const Colaboradoras = require('../models/colaboradorasModel');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET;
 
 const create = (req, res) => {
-    const senhaComHash = bcrypt.hashSync(req.body.senha, 10); //uso função do bcrypt para a senha virar um Hash
-    req.body.senha = senhaComHash; //transforma a senha em Hash
+    const senhaComHash = bcrypt.hashSync(req.body.senha, 10);
+    req.body.senha = senhaComHash;
 
-    const colaboradora = new Colaboradoras(req.body); //crio uma nova colaboradora
-    colaboradora.save(function (err) { //salvo a colaboradora e crio função de erro 
+    const colaboradora = new Colaboradoras(req.body);
+    colaboradora.save(function (err) {
         if (err) {
             res.status(500).send({ message: err.message })
         }
@@ -17,11 +17,11 @@ const create = (req, res) => {
 };
 
 const getAll = (req, res) => {
-    Colaboradoras.find(function (err, colaboradoras) { //usa um método para procurar as colaboradoras com um função com parametros de erro e colaboradora
+    Colaboradoras.find(function (err, colaboradoras) {
         if (err) {
             res.status(500).send({ message: err.message })
         }
-        res.status(200).send(colaboradoras); //retorna status de sucesso e o json com a lista das colaboradoras
+        res.status(200).send(colaboradoras);
     })
 };
 
@@ -47,12 +47,9 @@ const login = (req, res) => {
         }
 
 
-        const senhaValida = bcrypt.compareSync(req.body.senha, colaboradora.senha); //compara a senha do corpo com a senha do banco de dados (fazendo o Hash internamente)
-
+        const senhaValida = bcrypt.compareSync(req.body.senha, colaboradora.senha);
 
         if (!senhaValida) {
-        /* 403 Forbidden é um código de resposta HTTP da classe de respostas de erro do cliente, a qual indica que o servidor recebeu a requisição e foi capaz de identificar o autor, porém não autorizou a emissão de um resposta. Os motivos para a proibição do acesso podem ser especificados no corpo da resposta.
-        */
             return res.status(403).send('erro ao digitar a senha');
         }
         const token = jwt.sign({ email: req.body.email }, SECRET);

@@ -6,18 +6,18 @@ const SECRET = process.env.SECRET
 const findAllConsoles = async (req, res) => {
   try {
 
-    const authHeader = req.get('authorization'); // pega o cabeçalho de autorização
+    const authHeader = req.get('authorization'); 
 
 
-    if (!authHeader) { //trata o erro ao esquecer de passar o token 
+    if (!authHeader) {
       return res.status(401).send('Você esqueceu de passar as informações de autorização');
     }
 
-    const token = authHeader.split(' ')[1]; //separa as informações do cabeçalho em um array de 2 posições
+    const token = authHeader.split(' ')[1];
 
-    jwt.verify(token, SECRET, async function (erro) { // verifica o token passado e a SECRET  
+    jwt.verify(token, SECRET, async function (erro) {
       if (erro) {
-        return res.status(403).send('Acesso não autorizado'); // função para tratar erro de autorização
+        return res.status(403).send('Acesso não autorizado');
       }
 
       const allConsoles = await ConsolesModel.find();
