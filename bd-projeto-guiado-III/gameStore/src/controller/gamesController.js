@@ -1,10 +1,23 @@
 const GamesModel = require("../models/gamesModel");
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require("jsonwebtoken")
+const SECRET= process.env.SECRET
 
 const findAllGames = async (req, res) => {
   try {
-    const allGames = await GamesModel.find().populate("console");
-    res.status(200).json(allGames);
+    //protegendo
+    const authHeader = req.get("authorization")//pegando cabeçalho de autorizaçao
+    if(!authHeader){
+      return res.status(401).send("Voce nao passou as informaçoes de autorizaçao")
+    }
+    const token = authHeader.split(" ")[1]
+    jwt.verify(token,SECRET,async function(erro){
+      if(erro){
+        return res.status(403).send("Acesso não autorizado")
+      }
+      const allGames = await GamesModel.find().populate("console");
+      res.status(200).json(allGames);
+    })
   } catch {
     res.status(500).json({ message: error.message });
   };
