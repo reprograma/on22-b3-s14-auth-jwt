@@ -1,19 +1,19 @@
-const DATABASE_URI = process.env.DATABASE_URI;
+const DB_URI = process.env.DB_URI
+const mongoose = require('mongoose');
 
-const mongoose = require("mongoose");
+const connectToDB = async () => {
+    try {
+        mongoose.connect(
+            DB_URI,
+            {   
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            }
+        )
+        console.log("Connected to mongoDB r-library.")
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-const connect = async () => {
-  try {
-    mongoose.connect(DATABASE_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Database connected");
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-module.exports = {
-  connect,
-};
+module.exports = connectToDB;
