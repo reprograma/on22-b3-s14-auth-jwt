@@ -1,10 +1,24 @@
 const GamesModel = require("../models/gamesModel");
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.SECRET;
 
 const findAllGames = async (req, res) => {
   try {
+    const authHeader = req.get("authorization")
+    if (!authHeader) {
+      return res.status(401).send("você esqueceu de passar as informações de autorização!")
+    }
+    const token = authHeader.split(" ")[1]
+
+    jwt.verify(token, SECRET, async function (error) {
+      if (error) {
+        return res.status(403).send("acesso não autorizado!!")
+      }
+
     const allGames = await GamesModel.find().populate("console");
     res.status(200).json(allGames);
+  })
   } catch {
     res.status(500).json({ message: error.message });
   };
@@ -12,6 +26,17 @@ const findAllGames = async (req, res) => {
 
 const findGameById = async (req, res) => {
   try {
+    const authHeader = req.get("authorization")
+    if (!authHeader) {
+      return res.status(401).send("você esqueceu de passar as informações de autorização!")
+    }
+    const token = authHeader.split(" ")[1]
+
+    jwt.verify(token, SECRET, async function (error) {
+      if (error) {
+        return res.status(403).send("acesso não autorizado!!")
+      }
+
     const findGame = await GamesModel.findById(req.params.id).populate(
       "console"
     );
@@ -19,6 +44,7 @@ const findGameById = async (req, res) => {
       res.status(404).json({ message: "Game not available" });
     }
     res.status(200).json(findGame);
+  })
   } catch (error) {
     res.status(500).json({ message: error.message });
   };
@@ -26,6 +52,17 @@ const findGameById = async (req, res) => {
 
 const addNewGame = async (req, res) => {
   try {
+    const authHeader = req.get("authorization")
+    if (!authHeader) {
+      return res.status(401).send("você esqueceu de passar as informações de autorização!")
+    }
+    const token = authHeader.split(" ")[1]
+
+    jwt.verify(token, SECRET, async function (error) {
+      if (error) {
+        return res.status(403).send("acesso não autorizado!!")
+      }
+
     const {
       consoleId,
       name,
@@ -63,6 +100,7 @@ const addNewGame = async (req, res) => {
     res
       .status(200)
       .json({ message: "New game added successfully!", savedGame });
+  })
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
@@ -71,6 +109,17 @@ const addNewGame = async (req, res) => {
 
 const updateGame = async (req, res) => {
   try {
+    const authHeader = req.get("authorization")
+    if (!authHeader) {
+      return res.status(401).send("você esqueceu de passar as informações de autorização!")
+    }
+    const token = authHeader.split(" ")[1]
+
+    jwt.verify(token, SECRET, async function (error) {
+      if (error) {
+        return res.status(403).send("acesso não autorizado!!")
+      }
+
     const { id } = req.params;
     const {
       consoleId,
@@ -105,6 +154,7 @@ const updateGame = async (req, res) => {
 
     const savedGame = await findGame.save();
     res.status(200).json({ message: "Game successfully updated", savedGame });
+  })
   } catch (error) {
     res.status(500).json({ message: error.message });
   };
@@ -112,7 +162,18 @@ const updateGame = async (req, res) => {
 
 const deleteGame = async (req, res) => {
   try {
-    const { id } = req.params;
+    
+    const authHeader = req.get("authorization")
+    if (!authHeader) {
+      return res.status(401).send("você esqueceu de passar as informações de autorização!")
+    }
+    const token = authHeader.split(" ")[1]
+
+    jwt.verify(token, SECRET, async function (error) {
+      if (error) {
+        return res.status(403).send("acesso não autorizado!!")
+      }
+const { id } = req.params;
     const findGames = await GamesModel.findByIdAndDelete(id);
 
     if (findGames == null) {
@@ -120,6 +181,7 @@ const deleteGame = async (req, res) => {
     };
     
     res.status(200).json({ message: `Game with id ${id} was successfully deleted` });
+  })
   } catch (error) {
     res.status(500).json({ message: error.message });
   };
