@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("./database/dbConnect");
 const consolesRoutes = require("./routes/consolesRoute");
 const gamesRoutes = require("./routes/gamesRoute");
+const colaboradorasRoutes = require ("./routes/colaboradorasRoute")
 
 const app = express();
 
@@ -13,5 +14,6 @@ mongoose.connect();
 
 app.use("/gamestore/consoles",consolesRoutes);
 app.use("/gamestore/games",gamesRoutes);
+app.use("/gamestore", colaboradorasRoutes)
 
 module.exports = app;
