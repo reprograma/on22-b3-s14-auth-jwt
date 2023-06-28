@@ -1,5 +1,7 @@
 const GamesModel = require("../models/gamesModel");
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require('jsonwebtoken');
+const SECRET = process.env.SECRET;
 
 const findAllGames = async (req, res) => {
   try {
