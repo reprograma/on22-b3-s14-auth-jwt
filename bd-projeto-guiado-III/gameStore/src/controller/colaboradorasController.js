@@ -1,5 +1,5 @@
-const Colaboradoras = require('../models/colaboradorasModel')
-const bcrypt = require('bcrypt')
+const Colaboradoras = require('../models/colaboradorasModel');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET;
 
@@ -13,15 +13,11 @@ const create = async (req, res) => {
       senha: hashedPass,
     });
     await colaboradora.save();
-    res
-      .status(201)
-      .json({ colaboradora });
+    res.status(201).json({ colaboradora });
   } catch (err) {
-    res
-      .status(500)
-      .send({ message: err.message });
+    res.status(500).send({ message: err.message });
   }
-}
+};
 
 const getAll = async (req, res) => {
   try {
@@ -37,17 +33,11 @@ const getAll = async (req, res) => {
     res.status(200).json({ colaboradoras });
   } catch (err) {
     if (err.message === 'No authorization info!') {
-      return res
-        .status(401)
-        .send(err.message);
+      return res.status(401).send(err.message);
     } else if (err.message === 'JsonWebTokenError') {
-      return res
-        .status(403)
-        .send('Access not authorized!');
+      return res.status(403).send('Access not authorized!');
     } else {
-      return res
-        .status(500)
-        .send({ message: err.message });
+      return res.status(500).send({ message: err.message });
     }
   }
 };
@@ -68,17 +58,11 @@ const deleteByID = async (req, res) => {
     return res.status(200).json({ message });
   } catch (err) {
     if (err.message === 'No authorization info!') {
-      return res
-        .status(401)
-        .send(err.message);
+      return res.status(401).send(err.message);
     } else if (err.message === 'JsonWebTokenError') {
-      return res
-        .status(403)
-        .send('Access not authorized!');
+      return res.status(403).send('Access not authorized!');
     } else {
-      return res
-        .status(500)
-        .send({ message: err.message });
+      return res.status(500).send({ message: err.message });
     }
   }
 };
@@ -105,23 +89,18 @@ const login = async (req, res) => {
     return res.status(200).send(token);
   } catch (err) {
     if (err.message === 'Wrong password!') {
-      return res
-        .status(403)
-        .send('Access not authorized!');
+      return res.status(403).send('Access not authorized!');
     } else {
-      return res
-        .status(404)
-        .send({
-          message: `Não existe colaboradora com o email ${req.body.email}`,
-        });
+      return res.status(404).send({
+        message: `Não existe colaboradora com o email ${req.body.email}`,
+      });
     }
   }
 };
-
 
 module.exports = {
   create,
   getAll,
   deleteByID,
-  login
+  login,
 };

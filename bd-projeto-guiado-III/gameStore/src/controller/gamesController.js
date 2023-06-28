@@ -1,5 +1,5 @@
-const GamesModel = require("../models/gamesModel");
-const ConsolesModel = require("../models/consolesModel");
+const GamesModel = require('../models/gamesModel');
+const ConsolesModel = require('../models/consolesModel');
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET;
 
@@ -14,12 +14,12 @@ const findAllGames = async (req, res) => {
       if (err) {
         return res.status(403).send('Access not authorized!');
       }
-      const allGames = await GamesModel.find().populate("console");
+      const allGames = await GamesModel.find().populate('console');
       res.status(200).json(allGames);
     });
-  } catch {
+  } catch (error) {
     res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 const findGameById = async (req, res) => {
@@ -33,17 +33,17 @@ const findGameById = async (req, res) => {
       if (err) {
         return res.status(403).send('Access not authorized!');
       }
-      const findGame = await GamesModel.findById(req.params.id).populate(
-        "console"
-      );
+      const findGame = await GamesModel.findById(
+        req.params.id
+      ).populate('console');
       if (findGame == null) {
-        res.status(404).json({ message: "Game not available" });
+        res.status(404).json({ message: 'Game not available' });
       }
       res.status(200).json(findGame);
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 const addNewGame = async (req, res) => {
@@ -67,19 +67,19 @@ const addNewGame = async (req, res) => {
         available,
         description,
       } = req.body;
-  
+
       if (!consoleId) {
         return res
           .status(400)
-          .json({ message: "Required: Enter the Console id." });
-      };
-  
+          .json({ message: 'Required: Enter the Console id.' });
+      }
+
       const findConsole = await ConsolesModel.findById(consoleId);
-  
+
       if (!findConsole) {
-        return res.status(404).json({ message: "Console not found" });
-      };
-  
+        return res.status(404).json({ message: 'Console not found' });
+      }
+
       const newGame = new GamesModel({
         console: consoleId,
         name,
@@ -93,12 +93,11 @@ const addNewGame = async (req, res) => {
       const savedGame = await newGame.save();
       res
         .status(200)
-        .json({ message: "New game added successfully!", savedGame });
+        .json({ message: 'New game added successfully!', savedGame });
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 const updateGame = async (req, res) => {
@@ -125,16 +124,18 @@ const updateGame = async (req, res) => {
       } = req.body;
       const findGame = await GamesModel.findById(id);
       if (findGame == null) {
-        res.status(404).json({ message: "Game not found" });
-      };
-  
+        res.status(404).json({ message: 'Game not found' });
+      }
+
       if (consoleId) {
         const findConsole = await ConsolesModel.findById(consoleId);
-  
+
         if (findConsole == null) {
-          return res.status(404).json({ message: "Console not found" });
-        };
-      };
+          return res
+            .status(404)
+            .json({ message: 'Console not found' });
+        }
+      }
       findGame.name = name || findGame.name;
       findGame.developer = developer || findGame.developer;
       findGame.releaseDate = releaseDate || findGame.releaseDate;
@@ -143,13 +144,15 @@ const updateGame = async (req, res) => {
       findGame.available = available || findGame.available;
       findGame.description = description || findGame.description;
       findGame.console = consoleId || findGame.console;
-  
+
       const savedGame = await findGame.save();
-      res.status(200).json({ message: "Game successfully updated", savedGame });
+      res
+        .status(200)
+        .json({ message: 'Game successfully updated', savedGame });
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 const deleteGame = async (req, res) => {
@@ -165,16 +168,20 @@ const deleteGame = async (req, res) => {
       }
       const { id } = req.params;
       const findGames = await GamesModel.findByIdAndDelete(id);
-  
+
       if (findGames == null) {
-        return res.status(404).json({ message: `Game with id ${id} not found` })
-      };
-      
-      res.status(200).json({ message: `Game with id ${id} was successfully deleted` });
+        return res
+          .status(404)
+          .json({ message: `Game with id ${id} not found` });
+      }
+
+      res.status(200).json({
+        message: `Game with id ${id} was successfully deleted`,
+      });
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 module.exports = {
