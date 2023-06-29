@@ -37,15 +37,11 @@ const deleteById = async (req, res) => {
     }
 };
 
-
-
-
 const login = (req, res) => {
     Colaboradoras.findOne({ email: req.body.email }, function (error, colaboradora) {
         if (!colaboradora) {
             return res.status(404).send(`Não existe colaboradora com o email ${req.body.email}`);
         }
-
 
         const senhaValida = bcrypt.compareSync(req.body.senha, colaboradora.senha);
 
