@@ -1,4 +1,6 @@
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require('jsonwebtoken');
+const SECRET = process.env.SECRET
 
 const findAllConsoles = async (req, res) => {
   try {
