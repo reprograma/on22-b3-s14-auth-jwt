@@ -17,20 +17,48 @@ const create = (req, res) => {
 };
 
 const getAll = (req, res) => {
-    Colaboradoras.find(function (err, colaboradoras) {
-        if (err) {
-            res.status(500).send({ message: err.message })
+    const authHeader = req.get('authorization');
+
+    if (!authHeader) {
+        return res.status(401).send('Você esqueceu de passar as informações de autorização');
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, SECRET, async function (erro) {
+        if (erro) {
+            return res.status(403).send('Acesso não autorizado');
         }
-        res.status(200).send(colaboradoras);
+
+        Colaboradoras.find(function (err, colaboradoras) {
+            if (err) {
+                res.status(500).send({ message: err.message })
+            }
+            res.status(200).send(colaboradoras);
+        })
     })
 };
 
 const deleteById = async (req, res) => {
     try {
-        const { id } = req.params
-        await Colaboradoras.findByIdAndDelete(id)
-        const message = `A colaboradora com o ${id} foi deletada com sucesso!`
-        res.status(200).json({ message })
+        const authHeader = req.get('authorization');
+
+        if (!authHeader) {
+            return res.status(401).send('Você esqueceu de passar as informações de autorização');
+        }
+
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, SECRET, async function (erro) {
+            if (erro) {
+                return res.status(403).send('Acesso não autorizado');
+            }
+
+            const { id } = req.params
+            await Colaboradoras.findByIdAndDelete(id)
+            const message = `A colaboradora com o ${id} foi deletada com sucesso!`
+            res.status(200).json({ message })
+        })
     } catch (error) {
         console.error(error)
         res.status(500).json({ message: error.message })
