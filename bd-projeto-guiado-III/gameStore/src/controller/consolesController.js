@@ -1,13 +1,31 @@
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.SECRET;
 
 const findAllConsoles = async (req, res) => {
   try {
-    const allConsoles = await ConsolesModel.find();
-    res.status(200).json(allConsoles);
+    const authHeader = req.get("authorization");
+
+    if (!authHeader) {
+      return res
+        .status(401)
+        .send("Voce esqueceu de passar as informacoes de autorizacao!");
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    jwt.verify(token, SECRET, async function (erro) {
+      if (erro) {
+        return res.status(403).send("Acesso nao autorizado!");
+      }
+
+      const allConsoles = await ConsolesModel.find();
+      res.status(200).json(allConsoles);
+    });
   } catch {
     console.log(error);
     res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 const findConsoleById = async (req, res) => {
@@ -17,7 +35,7 @@ const findConsoleById = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 const addNewConsole = async (req, res) => {
@@ -45,11 +63,13 @@ const addNewConsole = async (req, res) => {
 
     const savedConsole = await newConsole.save();
 
-    res.status(201).json({ message: "New console successfully added", savedConsole });
+    res
+      .status(201)
+      .json({ message: "New console successfully added", savedConsole });
   } catch (error) {
     console.error(error);
     res.status(500).json(error.message);
-  };
+  }
 };
 
 const updateConsole = async (req, res) => {
@@ -75,11 +95,13 @@ const updateConsole = async (req, res) => {
       description,
     });
 
-    res.status(200).json({ message: "Console successfully updated", updateConsole });
+    res
+      .status(200)
+      .json({ message: "Console successfully updated", updateConsole });
   } catch {
     console.error(error);
     res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 const deleteConsole = async (req, res) => {
@@ -88,10 +110,10 @@ const deleteConsole = async (req, res) => {
     const deleteConsole = await ConsolesModel.findByIdAndDelete(id);
     const message = `Console with id ${deleteConsole.name} was successfully deleted`;
     res.status(200).json({ message });
-  } catch (error){
+  } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
-  };
+  }
 };
 
 module.exports = {
