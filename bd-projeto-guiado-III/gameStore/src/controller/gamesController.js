@@ -1,8 +1,21 @@
 const GamesModel = require("../models/gamesModel");
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require('jsonwebtoken');
+const SECRET = process.env.SECRET;
+
 
 const findAllGames = async (req, res) => {
   try {
+    const authHeader = req.get("authorization")
+    if (!authHeader) {
+      return res.status(401).send("você esqueceu de passar as informaçoes")
+    };
+    const token = authHeader.split(" ")[1]
+    jwt.verify(token, SECRET, async function (error){
+      if (error) {
+        return res.status(403).send("acesso não autorizado")
+      }  
+    })
     const allGames = await GamesModel.find().populate("console");
     res.status(200).json(allGames);
   } catch {
@@ -11,6 +24,13 @@ const findAllGames = async (req, res) => {
 };
 
 const findGameById = async (req, res) => {
+  try {
+    const authHeader = (req, res) => {
+      if (!authHeader) {
+        return res.status(401).send("esqueceu de passar informação")
+      }
+    }
+  const token = authHeader.split(" ")[1]
   try {
     const findGame = await GamesModel.findById(req.params.id).populate(
       "console"
