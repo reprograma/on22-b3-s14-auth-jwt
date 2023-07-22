@@ -7,7 +7,7 @@ const findAllConsoles = async (req, res) => {
     const authHeader = req.get("authorization");
 
     if (!authHeader) {
-      return res.status(401).send("Você esqueceu de passar as informaçãoes de autoriazões")
+      return res.status(401).send("Você esqueceu de passar as informaçãoes de autorzações")
     }
   
     const token = authHeader.split(" ")[1];
@@ -22,7 +22,7 @@ const findAllConsoles = async (req, res) => {
   })
 } catch {
   console.log(erro);
-  res.status(500).json({ message: error.message });
+  res.status(500).json({ message: erro.message });
   };
 };
 

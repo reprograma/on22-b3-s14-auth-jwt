@@ -125,7 +125,7 @@ const updateGame = async (req, res) => {
 
     jwt.verify(token, SECRET, async function(erro) {
       if (erro) {
-        return res.status(403).send("Acesso não autorizaso")
+        return res.status(403).send("Acesso não autorizado")
       }
     })
 
@@ -179,7 +179,7 @@ const deleteGame = async (req, res) => {
 
     jwt.verify(token, SECRET, async function(erro) {
       if (erro) {
-        return res.status(403).send("Acesso não autorizaso")
+        return res.status(403).send("Acesso não autorizado")
       }
     })
 
