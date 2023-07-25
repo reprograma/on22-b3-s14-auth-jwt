@@ -1,6 +1,23 @@
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require('jsonwebtoken') 
+const SECRET = process.env.SECRET 
 
 const findAllConsoles = async (req, res) => {
+  const authHeader = req.get('authorization'); 
+
+  if (!authHeader) { 
+    return res.status(401).send('Você esqueceu de passar as informações de autorização'); 
+  }
+
+  const token = authHeader.split(' ')[1]; 
+
+
+  jwt.verify(token, SECRET, function(erro) { 
+    if (erro) {
+      return res.status(403).send('Acesso não autorizado');
+    }
+})
+ 
   try {
     const allConsoles = await ConsolesModel.find();
     res.status(200).json(allConsoles);
@@ -11,6 +28,23 @@ const findAllConsoles = async (req, res) => {
 };
 
 const findConsoleById = async (req, res) => {
+  const authHeader = req.get('authorization'); 
+
+  if (!authHeader) { 
+    return res.status(401).send('Você esqueceu de passar as informações de autorização'); 
+  }
+
+  const token = authHeader.split(' ')[1]; 
+
+
+  jwt.verify(token, SECRET, function(erro) { 
+    if (erro) {
+      return res.status(403).send('Acesso não autorizado');
+    }
+})
+ 
+ 
+ 
   try {
     const findConsole = await ConsolesModel.findById(req.params.id);
     res.status(200).json(findConsole);
@@ -21,6 +55,23 @@ const findConsoleById = async (req, res) => {
 };
 
 const addNewConsole = async (req, res) => {
+  
+  const authHeader = req.get('authorization'); 
+
+  if (!authHeader) { 
+    return res.status(401).send('Você esqueceu de passar as informações de autorização'); 
+  }
+
+  const token = authHeader.split(' ')[1]; 
+
+
+  jwt.verify(token, SECRET, function(erro) { 
+    if (erro) {
+      return res.status(403).send('Acesso não autorizado');
+    }
+})
+  
+  
   try {
     const {
       name,
@@ -83,6 +134,23 @@ const updateConsole = async (req, res) => {
 };
 
 const deleteConsole = async (req, res) => {
+  
+  const authHeader = req.get('authorization'); 
+
+  if (!authHeader) { 
+    return res.status(401).send('Você esqueceu de passar as informações de autorização'); 
+  }
+
+  const token = authHeader.split(' ')[1]; 
+
+
+  jwt.verify(token, SECRET, function(erro) { 
+    if (erro) {
+      return res.status(403).send('Acesso não autorizado');
+    }
+})
+  
+  
   try {
     const { id } = req.params;
     const deleteConsole = await ConsolesModel.findByIdAndDelete(id);
