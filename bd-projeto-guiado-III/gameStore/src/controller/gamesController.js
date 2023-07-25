@@ -1,7 +1,25 @@
 const GamesModel = require("../models/gamesModel");
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require('jsonwebtoken') 
+const SECRET = process.env.SECRET 
 
 const findAllGames = async (req, res) => {
+  
+  const authHeader = req.get('authorization'); 
+
+  if (!authHeader) { 
+    return res.status(401).send('Você esqueceu de passar as informações de autorização'); 
+  }
+
+  const token = authHeader.split(' ')[1]; 
+
+
+  jwt.verify(token, SECRET, function(erro) { 
+    if (erro) {
+      return res.status(403).send('Acesso não autorizado');
+    }
+})
+  
   try {
     const allGames = await GamesModel.find().populate("console");
     res.status(200).json(allGames);
@@ -11,6 +29,22 @@ const findAllGames = async (req, res) => {
 };
 
 const findGameById = async (req, res) => {
+ 
+  const authHeader = req.get('authorization'); 
+
+  if (!authHeader) { 
+    return res.status(401).send('Você esqueceu de passar as informações de autorização'); 
+  }
+
+  const token = authHeader.split(' ')[1]; 
+
+
+  jwt.verify(token, SECRET, function(erro) { 
+    if (erro) {
+      return res.status(403).send('Acesso não autorizado');
+    }
+})
+ 
   try {
     const findGame = await GamesModel.findById(req.params.id).populate(
       "console"
@@ -25,6 +59,24 @@ const findGameById = async (req, res) => {
 };
 
 const addNewGame = async (req, res) => {
+ 
+  const authHeader = req.get('authorization'); 
+
+  if (!authHeader) { 
+    return res.status(401).send('Você esqueceu de passar as informações de autorização'); 
+  }
+
+  const token = authHeader.split(' ')[1]; 
+
+
+  jwt.verify(token, SECRET, function(erro) { 
+    if (erro) {
+      return res.status(403).send('Acesso não autorizado');
+    }
+})
+ 
+ 
+ 
   try {
     const {
       consoleId,
@@ -70,6 +122,23 @@ const addNewGame = async (req, res) => {
 };
 
 const updateGame = async (req, res) => {
+  
+  const authHeader = req.get('authorization'); 
+
+  if (!authHeader) { 
+    return res.status(401).send('Você esqueceu de passar as informações de autorização'); 
+  }
+
+  const token = authHeader.split(' ')[1]; 
+
+
+  jwt.verify(token, SECRET, function(erro) { 
+    if (erro) {
+      return res.status(403).send('Acesso não autorizado');
+    }
+})
+  
+  
   try {
     const { id } = req.params;
     const {
@@ -111,6 +180,22 @@ const updateGame = async (req, res) => {
 };
 
 const deleteGame = async (req, res) => {
+  
+  const authHeader = req.get('authorization'); 
+
+  if (!authHeader) { 
+    return res.status(401).send('Você esqueceu de passar as informações de autorização'); 
+  }
+
+  const token = authHeader.split(' ')[1]; 
+
+
+  jwt.verify(token, SECRET, function(erro) { 
+    if (erro) {
+      return res.status(403).send('Acesso não autorizado');
+    }
+})
+  
   try {
     const { id } = req.params;
     const findGames = await GamesModel.findByIdAndDelete(id);

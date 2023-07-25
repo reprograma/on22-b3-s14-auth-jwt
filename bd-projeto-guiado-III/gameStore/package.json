@@ -19,9 +19,12 @@
   },
   "homepage": "https://github.com/reprograma/on19-tet-s13-bd-projeto-guiado-III#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
+    "l": "^0.6.0",
     "mongoose": "^6.7.1",
     "save": "^2.9.0"
   },
