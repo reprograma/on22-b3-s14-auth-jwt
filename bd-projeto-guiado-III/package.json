@@ -1,0 +1,20 @@
+{
+  "name": "bd-projeto-guiado-iii",
+  "version": "1.0.0",
+  "description": "Olá, meu nome é Gaia Maria. Sou uma travesti graduada em História Licenciatura (UNESP) e graduanda em Análise e Desenvolvimento de Sistemas (Faculdade Descomplica). Sou uma Bruxa devota a Hecate, ocultista e pagã. Tambem sou uma pessoa neurodiversa, gamer, viciada em RPG e desenvolvedora.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
+    "mongoose": "^7.4.1",
+    "nodemon": "^3.0.1"
+  }
+}
