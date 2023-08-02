@@ -1,9 +1,26 @@
 const ConsolesModel = require("../models/consolesModel");
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.SECRET;
 
 const findAllConsoles = async (req, res) => {
   try {
-    const allConsoles = await ConsolesModel.find();
+const authHeader = req.get("authorization") //pega cabelhaço de autorização
+
+if (!authHeader){
+  return res.status(401).send("Você esqueceu de passar as informações de autorização!!!")
+}
+
+const token = authHeader.split(" ")[1]
+
+jwt.verify(token, SECRET, async function (erro) {
+  if (erro){
+    return res.status(403).send("Acesso não autorizado!!!")
+  }
+
+  const allConsoles = await ConsolesModel.find();
     res.status(200).json(allConsoles);
+})
+    
   } catch {
     console.log(error);
     res.status(500).json({ message: error.message });
